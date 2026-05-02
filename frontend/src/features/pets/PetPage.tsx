@@ -1,24 +1,41 @@
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
-import {setPetAsAdopted, toggleFavourite} from './petsSlice'
-import {useAppSelector} from "../../app/hooks.ts";
-import {Dog, Cat, Bird, Heart, Rabbit} from 'lucide-react';
+import {fetchPetById, setPetAsAdopted, toggleFavourite} from './petsSlice'
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {Dog, Cat, Bird, Heart, Rabbit, ArrowLeft} from 'lucide-react';
 import {adoptAPet} from "../adoptions/adoptionsSlice.ts";
+import {useEffect} from "react";
 
 const PetPage = () => {
     const {id} = useParams()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const pet = useAppSelector(state => state.pets.items.find(p => p.id === id))
+
+    useEffect(() => {
+        if (id && !pet) {
+            dispatch(fetchPetById(id))
+        }
+    }, [id, pet, dispatch])
 
     if (!pet) return <div className="p-8 text-center text-gray-400">Pet not found</div>
 
     const adopt = () => {
         dispatch(adoptAPet({id: pet.id, ownerName: "my--test-user"}))
         dispatch(setPetAsAdopted(pet.id))
+
     }
 
     return (
         <div className="max-w-2xl mx-auto p-8 min-w-150">
+            <Link to={`/`}>
+            <button
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-white mb-5 transition-colors">
+                <ArrowLeft className="w-4 h-4"/>
+                Back to home
+            </button>
+            </Link>
+
+
             <div className="border border-gray-700 rounded-xl overflow-hidden">
 
                 <div className="bg-gray-900 p-6 flex items-center gap-6 border-b border-gray-700">

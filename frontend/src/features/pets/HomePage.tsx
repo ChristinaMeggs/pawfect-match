@@ -1,8 +1,15 @@
 import '../../App.css'
 import {PetList} from "./PetList.tsx";
+import {useEffect} from "react";
+import {useAppDispatch} from "../../app/hooks.ts";
+import {fetchPets} from "./petsSlice.ts";
 
 function HomePage() {
+    const dispatch = useAppDispatch()
 
+    useEffect(() => {
+        dispatch(fetchPets())
+    }, [dispatch])
     return (
         <div className={"h-full w-full"}>
             <div className={"text-5xl m-4"}>Pawfect Match</div>
