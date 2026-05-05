@@ -1,9 +1,8 @@
 import {Link, useParams} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
 import {fetchPetById, setPetAsAdopted, toggleFavourite} from './petsSlice'
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {Dog, Cat, Bird, Heart, Rabbit, ArrowLeft} from 'lucide-react';
-import {adoptAPet} from "../adoptions/adoptionsSlice.ts";
+import {ArrowLeft, Bird, Cat, Dog, Heart, Rabbit} from 'lucide-react';
+import {postAdoption} from "../adoptions/adoptionsSlice.ts";
 import {useEffect} from "react";
 
 const PetPage = () => {
@@ -20,7 +19,7 @@ const PetPage = () => {
     if (!pet) return <div className="p-8 text-center text-gray-400">Pet not found</div>
 
     const adopt = () => {
-        dispatch(adoptAPet({id: pet.id, ownerName: "my--test-user"}))
+        dispatch(postAdoption({petId: pet.id, owner: "my--test-user"}))
         dispatch(setPetAsAdopted(pet.id))
 
     }
